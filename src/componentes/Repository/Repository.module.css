@@ -1,0 +1,30 @@
+.article{
+    display: flex;
+    border: rgba(128, 128, 128, 0.297) 1px solid;
+    border-radius: 5px;
+    max-width: 980px;
+    
+}
+
+.box1{
+    border: solid 1px rgba(128, 128, 128, 0.263);
+    padding: 15px;
+    text-align: center;
+}
+
+.box1:hover{
+    background-color: orangered;
+    color: white;
+    border-radius: 5px;
+}
+
+.h3{
+    margin: 15px 0 0 15px;
+}
+
+
+.p{
+    text-align: center;
+    margin: 20px 0 0 15px;
+    max-width: 980px;
+}

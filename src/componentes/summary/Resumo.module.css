@@ -1,0 +1,15 @@
+
+
+.img{
+    display: flex;
+    width: 350px;
+    margin: 15px 0 0 15px ;
+    border-radius: 5px;
+}
+
+.h2{
+    display: flex;
+    margin: 5px 0 0 15px;
+}
+
+
