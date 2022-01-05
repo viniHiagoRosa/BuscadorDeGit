@@ -1,16 +1,33 @@
 import { Repository } from "./componentes/Repository";
 import { Resumo } from "./componentes/summary";
+import { useEffect, useState } from 'react'
+import { mapToRepoObject } from "./componentes/Data/data-utils";
+
+
 
 
 function App() {
   const lista_repositorios = [];
+  const [repositorios, setRepositorios] = useState(lista_repositorios, mapToRepoObject)
+  const [idSelecionada] = useState(1)
+  const [nomeUsuario, setNomeUsuario] = useState('viniHiagoRosa', )
+    
+
   
-  for (let index = 0; index < 5; index++) {
+  for (let i = 0; i < 5; i++) {
+    
     lista_repositorios.push({
-      id: index + 1,
-      titulo: `teste${index + 1}`,
-      descricao: `teste${index + 1}`,
+      id: i + 1,
+      titulo: `teste`,
+      descricao: `teste`,
+      
     });
+    
+  }
+
+  const color ={
+    color: 'white',
+    margin: '15px'
   }
 
   const estiloMargin = {
@@ -21,22 +38,54 @@ function App() {
     listStyle: 'none',
   }
 
+const fetchDadosDoUsuario = () => {
+    fetch( `https://api.github.com/users/${nomeUsuario}/repos` )
+        .then((resposta) => resposta.json())
+        .then((resultado) => {
+            const resultadoMapeado = mapToRepoObject(resultado);
+            setRepositorios(resultadoMapeado);
+            console.log(resultado)
+        });
+};
+
+useEffect(() => {
+  fetchDadosDoUsuario();
+},[])
+    
+
+      const handleNomeUsuario = (valor) => {
+        setNomeUsuario(valor)
+
+      }
+
+      const handleBuscar = () => {
+        console.log()
+        fetchDadosDoUsuario();
+      };
+
   return (
 
     <>
-        <h1 style={estiloMargin} >Meu portifólio, Github</h1>
+        <h1 style={color} >Meu portifólio, Github</h1>
 
-  <Resumo imagem="https://github.com/viniHiagoRosa.png" nome="Vinicius Hiago da Rosa"/>   
+  <Resumo imagem={`https://github.com/${nomeUsuario}.png`} nome={nomeUsuario}/>   
   
+    <input style={estiloMargin} type="text" onChange={(event) => handleNomeUsuario(event.target.value)} value={nomeUsuario}></input>
+    <button onClick={handleBuscar}>Buscar</button>
+    
 
-  {!lista_repositorios.length && <p>nenhum item</p>}
-      {lista_repositorios.length && (
+  {!repositorios.length && <p>nenhum item</p>}
+      {repositorios.length && (
         <ul style={estiloLista}>
-          {lista_repositorios.map((item) => (
+          {repositorios.map((item) => (
             <li key={item.id}>
-              
-                <Repository titulo={'Projeto'} destacar={true} descricao="Repositório lorem10lorem10"/>
-             
+
+                <Repository 
+                key={item.id}
+                titulo={item.titulo} 
+                destacar={item.id === idSelecionada}  
+                descricao={item.descricao}/>
+                
             </li>
           ))}
         </ul>
